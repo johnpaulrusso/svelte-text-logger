@@ -1,7 +1,9 @@
 <script lang="ts">
-	import type { ILoggerModel } from "$lib/LoggerModel";
+	import { LoggerController } from "$lib/LoggerController";
 
-    let loggerModel: ILoggerModel
+    let loggerController = new LoggerController();
+
+    loggerController.LogString("Hello World!");
 </script>
 
 <h1>Welcome to your library project</h1>
