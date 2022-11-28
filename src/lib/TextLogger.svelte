@@ -22,6 +22,7 @@
         overflow-y: auto;
         overflow-x: auto;
         display: flex;
+        height: 100%;
     }
 
     .datetime-col{
