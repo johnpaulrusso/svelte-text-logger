@@ -1,8 +1,8 @@
-import type { ILoggerModel, ILogMessage } from "./LoggerModel";
+import type { ITextLoggerModel, ITextLoggerMessage } from "./TextLoggerModel";
 
-export class LoggerController
+export class TextLoggerController
 {
-    model: ILoggerModel
+    model: ITextLoggerModel
 
     /** Create an empty model. */
     constructor()
@@ -12,7 +12,7 @@ export class LoggerController
 
     LogString(message: string)
     {
-        let logMessage: ILogMessage = {
+        let logMessage: ITextLoggerMessage = {
             datetime: new Date(),
             message: message
         }

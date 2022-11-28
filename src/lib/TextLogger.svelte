@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { ILoggerModel } from "./LoggerModel";
+    import type { ITextLoggerModel } from "./TextLoggerModel";
 
-    export let model: ILoggerModel;
+    export let model: ITextLoggerModel;
 </script>
 
 <div class="container">
