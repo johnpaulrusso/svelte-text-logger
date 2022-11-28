@@ -12,7 +12,11 @@
     </div>
     <div class="message-col">
         {#each model.messages as m}
-            <div class="log-item log-message" style="font-family: {model.fontFamily};">{m.message}</div>
+            <div class="log-item log-message" style="font-family: {model.fontFamily};">
+                {#each m.messageSegments as s}
+                    <div style={model.styles[s.styleKey]}>{s.messageSegment}</div>
+                {/each}
+            </div>
         {/each}
     </div>
 </div>
@@ -30,10 +34,13 @@
     }
     .message-col{
         flex-shrink: 0;
-        white-space: nowrap;
+        white-space: pre;
     }
     
     .log-date{
         padding-right: 10px;
+    }
+    .log-message{
+        display: flex;
     }
 </style>

@@ -5,8 +5,13 @@
 
     let loggerController: TextLoggerController = new TextLoggerController();
 
+    loggerController.AddStyle("b", "font-weight: bold;");
+    loggerController.AddStyle("red", "color: red;");
+
     loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Example Usage: loggerController.AddStyle(\"red\", \"color: red;\")");
     loggerController.LogString("Example Usage: loggerController.LogString(\"Hello World!\")");
+    loggerController.LogString("This text is <b>bold</b> and this test is <red>red</red>.");
 
     function onLog()
     {
