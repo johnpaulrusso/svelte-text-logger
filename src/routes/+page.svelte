@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { LoggerController } from "$lib/LoggerController";
+	import { TextLoggerController } from "$lib/TextLoggerController";
 	import TextLogger from "$lib/TextLogger.svelte";
 
-    let loggerController = new LoggerController();
+    let loggerController = new TextLoggerController();
 
     loggerController.LogString("Hello World!");
     loggerController.LogString("This is a text logger demo.");

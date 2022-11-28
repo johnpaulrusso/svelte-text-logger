@@ -7,7 +7,7 @@ export class TextLoggerController
     /** Create an empty model. */
     constructor()
     {
-        this.model = {messages: []};
+        this.model = {messages: [], fontFamily: "'Courier New', Courier, monospace"};
     }
 
     LogString(message: string)
