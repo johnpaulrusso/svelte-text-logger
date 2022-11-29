@@ -2,16 +2,22 @@
 
 	import TextLogger from "$lib/TextLogger.svelte";
 	import { TextLoggerController } from "$lib/TextLoggerController";
+	import type { ITextLoggerConfiguration } from "$lib/TextLoggerModel";
 
-    let loggerController: TextLoggerController = new TextLoggerController();
+    let config: ITextLoggerConfiguration = {
+        defaultStyle: "font-family: 'Courier New', Courier, monospace; color: lightgray;",
+        backgroundColor: "darkslategray"
+    }
+    let loggerController: TextLoggerController = new TextLoggerController(config);
 
     loggerController.AddStyle("b", "font-weight: bold;");
     loggerController.AddStyle("red", "color: red;");
+    loggerController.AddStyle("hl", "color: black; background-color: yellow;");
 
     loggerController.LogString("Welcome to the TextLogger test harness.");
     loggerController.LogString("Example Usage: loggerController.AddStyle(\"red\", \"color: red;\")");
     loggerController.LogString("Example Usage: loggerController.LogString(\"Hello World!\")");
-    loggerController.LogString("This text is <b>bold</b>, this text is <red>red</red>, and this text is <b><red>bold red</red></b>.");
+    loggerController.LogString("This text is <b>bold</b>, this text is <red>red</red>, this text is <hl>highlighted</hl>, and this text is <b><hl><red>bold, red, and highlighted</red></hl></b>.");
 
     function onLog()
     {

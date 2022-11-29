@@ -14,15 +14,15 @@
 
 </script>
 
-<div class="container">
+<div class="container" style="background-color: {model.config.backgroundColor};">
     <div class="datetime-col">
         {#each model.messages as m}
-            <div class="log-item log-date" style="font-family: {model.fontFamily};">{m.datetime.toLocaleString()}:</div>
+            <div class="log-item log-date" style={model.config.defaultStyle}>{m.datetime.toLocaleString()}:</div>
         {/each}
     </div>
     <div class="message-col">
         {#each model.messages as m}
-            <div class="log-item log-message" style="font-family: {model.fontFamily};">
+            <div class="log-item log-message">
                 {#each m.messageSegments as s}
                     <div style={getStyleFromStyleKeys(s.styleKeys)}>{s.messageSegment}</div>
                 {/each}

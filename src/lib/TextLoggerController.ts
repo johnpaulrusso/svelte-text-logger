@@ -1,4 +1,4 @@
-import type { ITextLoggerModel, ITextLoggerMessage, ITextLoggerMessageSegment } from "./TextLoggerModel";
+import type { ITextLoggerModel, ITextLoggerMessage, ITextLoggerMessageSegment, ITextLoggerConfiguration } from "./TextLoggerModel";
 
 const STARTING_TAG_REGEX: string = "(<[a-zA-Z0-9]+>){1}";
 const ENDING_TAG_REGEX: string = "(<\/[a-zA-Z0-9]+>){1}";
@@ -8,9 +8,22 @@ export class TextLoggerController
     model: ITextLoggerModel
 
     /** Create an empty model. */
-    constructor()
+    constructor(config?: ITextLoggerConfiguration)
     {
-        this.model = {messages: [], fontFamily: "'Courier New', Courier, monospace", styles: {}};
+        if(config)
+        {
+            this.model = {config: config, messages: [], styles: {}};
+            this.model.styles["default"] = config.defaultStyle;
+        }
+        else
+        {
+            let defaultConfig: ITextLoggerConfiguration = {
+                defaultStyle: "font-family: 'Courier New', Courier, monospace;",
+                backgroundColor: "white"
+            }
+            this.model = {config: defaultConfig, messages: [], styles: {}};
+            this.model.styles["default"] = defaultConfig.defaultStyle;
+        }
     }
     
     AddStyle(key: string, style: string)
@@ -25,7 +38,7 @@ export class TextLoggerController
             messageSegments: []
         }
 
-        logMessage.messageSegments = this.#parseMessageSegments(message);
+        logMessage.messageSegments = this.#parseMessageSegments(message, ["default"]);
 
         this.model.messages.push(logMessage);
     }
