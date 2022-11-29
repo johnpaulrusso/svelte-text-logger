@@ -39,3 +39,12 @@ Finally, simply add the component to the DOM:
 ```html
 <TextLogger model={loggerController.model}></TextLogger>
 ```
+
+# Development
+
+To run the test harness in a browser:
+
+```bash
+npm install
+npm run dev -- --open
+```
