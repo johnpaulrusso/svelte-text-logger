@@ -6,8 +6,12 @@
 
     let config: ITextLoggerConfiguration = {
         defaultStyle: "font-family: 'Courier New', Courier, monospace; color: lightgray;",
-        backgroundColor: "darkslategray"
+        backgroundColor: "darkslategray",
+        controlbarColor: "rgb(31, 51, 51)",
+        controlbarButtonColor: "white",
+        controlbarButtonHoverStyle: "background-color: darkslategray; border-radius: 3px;"
     }
+    
     let loggerController: TextLoggerController = new TextLoggerController(config);
 
     loggerController.AddStyle("b", "font-weight: bold;");
@@ -33,18 +37,6 @@
         }
     }
 
-    function onClear()
-    {
-        let inputElement = document.getElementById("test-message-input") as HTMLInputElement
-        if(inputElement)
-        {
-            loggerController.Clear();   
-            loggerController.model = loggerController.model;
-
-            inputElement.value = "";
-            inputElement.focus();
-        }
-    }
 </script>
 
 <div class="container">
@@ -54,7 +46,6 @@
     <div class="harness-input">
         <input id="test-message-input" type="text" placeholder="Enter a log message here...">
         <button on:click={onLog}>Log</button>
-        <button on:click={onClear}>Clear</button>
     </div>
 </div>
 
