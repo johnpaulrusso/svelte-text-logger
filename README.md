@@ -25,12 +25,12 @@ loggerController.AddStyle("red", "color: red;");
 loggerController.AddStyle("hl", "color: black; background-color: yellow;");
 ```
 
-To make a log statement, call the LogString method. If custom styles were added, use them like HTML tags as folows:
+To make a log statement, call the LogString method. If custom styles were added, use them like HTML tags as follows. (Nested tags will override outer tags.)
 ```javascript
 loggerController.LogString("This text is <b>bold</b>, this text is <red>red</red>, this text is <hl>highlighted</hl>, and this text is <b><hl><red>bold, red, and highlighted</red></hl></b>.");
 ```
 
-Note: Svelte reactivity is trigger using the assignment operator. To trigger an update, use:
+Note: Svelte reactivity is triggered using the assignment operator. To trigger an update, use:
 ```javascript
 loggerController.model = loggerController.model;
 ```
