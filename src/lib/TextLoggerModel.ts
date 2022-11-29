@@ -1,11 +1,23 @@
 export interface ITextLoggerModel
 {
+    config: ITextLoggerConfiguration;
     messages: Array<ITextLoggerMessage>;
-    fontFamily: string;
+    styles: {[key: string]: string}
+}
+
+export interface ITextLoggerConfiguration
+{
+    defaultStyle: string;
 }
 
 export interface ITextLoggerMessage
 {
     datetime: Date;
-    message: string;
+    messageSegments: Array<ITextLoggerMessageSegment>;
+}
+
+export interface ITextLoggerMessageSegment
+{
+    messageSegment: string;
+    styleKeys: Array<string>;
 }
