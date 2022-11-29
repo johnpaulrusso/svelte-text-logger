@@ -19,7 +19,10 @@ export class TextLoggerController
         {
             let defaultConfig: ITextLoggerConfiguration = {
                 defaultStyle: "font-family: 'Courier New', Courier, monospace;",
-                backgroundColor: "white"
+                backgroundColor: "white",
+                controlbarColor: "white",
+                controlbarButtonColor: "black",
+                controlbarButtonHoverStyle: "background-color: lightgray; border-radius: 3px;"
             }
             this.model = {config: defaultConfig, messages: [], styles: {}};
             this.model.styles["default"] = defaultConfig.defaultStyle;

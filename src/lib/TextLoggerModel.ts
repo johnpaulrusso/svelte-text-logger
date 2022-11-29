@@ -8,6 +8,10 @@ export interface ITextLoggerModel
 export interface ITextLoggerConfiguration
 {
     defaultStyle: string;
+    backgroundColor: string;
+    controlbarColor: string;
+    controlbarButtonColor: string;
+    controlbarButtonHoverStyle: string;
 }
 
 export interface ITextLoggerMessage
