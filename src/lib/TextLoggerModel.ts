@@ -14,5 +14,5 @@ export interface ITextLoggerMessage
 export interface ITextLoggerMessageSegment
 {
     messageSegment: string;
-    styleKey: string;
+    styleKeys: Array<string>;
 }

@@ -11,7 +11,7 @@
     loggerController.LogString("Welcome to the TextLogger test harness.");
     loggerController.LogString("Example Usage: loggerController.AddStyle(\"red\", \"color: red;\")");
     loggerController.LogString("Example Usage: loggerController.LogString(\"Hello World!\")");
-    loggerController.LogString("This text is <b>bold</b> and this test is <red>red</red>.");
+    loggerController.LogString("This text is <b>bold</b>, this text is <red>red</red>, and this text is <b><red>bold red</red></b>.");
 
     function onLog()
     {
@@ -21,6 +21,7 @@
             let message = inputElement.value;
             loggerController.LogString(message);
             loggerController.model = loggerController.model;
+
             inputElement.value = "";
             inputElement.focus();
         }
@@ -33,6 +34,7 @@
         {
             loggerController.Clear();   
             loggerController.model = loggerController.model;
+
             inputElement.value = "";
             inputElement.focus();
         }

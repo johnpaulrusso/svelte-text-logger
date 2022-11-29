@@ -1,5 +1,8 @@
 import type { ITextLoggerModel, ITextLoggerMessage, ITextLoggerMessageSegment } from "./TextLoggerModel";
 
+const STARTING_TAG_REGEX: string = "(<[a-zA-Z0-9]+>){1}";
+const ENDING_TAG_REGEX: string = "(<\/[a-zA-Z0-9]+>){1}";
+
 export class TextLoggerController
 {
     model: ITextLoggerModel
@@ -32,66 +35,47 @@ export class TextLoggerController
         this.model.messages = [];
     }
 
-    #parseMessageSegments(message: string) : Array<ITextLoggerMessageSegment>
+    #parseMessageSegments(message: string, initialStyles: Array<string> = []) : Array<ITextLoggerMessageSegment>
     {
         let segments: Array<ITextLoggerMessageSegment> = [];
-        let endIdxPrev: number = 0;
-        
-        Object.entries(this.model.styles).forEach(([key , _]) => {
-            //Search the message for the style.
-            let startIdx = message.search("<" + key + ">");
-            let endIdx = message.search("</" + key + ">");
 
-            if(startIdx != -1 && endIdx != -1)
-            {
-                //First, get any un-styled text that might be between style markers.
-                let prevSubstring = message.substring(endIdxPrev, startIdx);
-                if(prevSubstring)
-                {
-                    let segment: ITextLoggerMessageSegment = {
-                        messageSegment: prevSubstring,
-                        styleKey: ""
-                    }
-                    segments.push(segment);
-                }
-                //Then, get the styled text.
-                let nextSubstring = message.substring(startIdx + key.length + 2, endIdx);
-                if(nextSubstring)
-                {
-                    let segment: ITextLoggerMessageSegment = {
-                        messageSegment: nextSubstring,
-                        styleKey: key
-                    }
-                    segments.push(segment);
-                }
-                //Offset the end index by the length of the style marker.
-                endIdxPrev = endIdx + key.length + 3;
-            }
-        });
+        let startingTagStartPosition = message.search("(<){1}");
+        let startingTagEndPosition = message.search("(>){1}");
 
-        //If no styles were found, there is only a single segment.
-        if(segments.length === 0)
+        if(startingTagEndPosition > startingTagStartPosition)
         {
-            let defaultMessageSegment: ITextLoggerMessageSegment = {
-                messageSegment: message,
-                styleKey: ""
+            let tagName = message.substring(startingTagStartPosition+1, startingTagEndPosition);
+            let tempRemainder = message.substring(startingTagEndPosition);
+            let offsetEndTagPosition = tempRemainder.search("(<\/" + tagName + ">){1}");
+
+            if(offsetEndTagPosition != -1)
+            {
+                let endingTagStartPosition = startingTagEndPosition + offsetEndTagPosition;
+                let endingTagEndPosition = endingTagStartPosition + tagName.length + 3; //3 is offset of "<\>"
+
+                let precusor: string = message.substring(0, startingTagStartPosition);
+                let inner: string = message.substring(startingTagEndPosition+1, endingTagStartPosition);
+                let remainder = message.substring(endingTagEndPosition);
+
+                let precursorSegment: ITextLoggerMessageSegment = {
+                    messageSegment: precusor,
+                    styleKeys: initialStyles
+                }
+                segments.push(precursorSegment);
+                segments = segments.concat(this.#parseMessageSegments(inner, initialStyles.concat([tagName])));
+                segments = segments.concat(this.#parseMessageSegments(remainder, initialStyles));
             }
-            segments.push(defaultMessageSegment);
         }
-        //The remainder of the string is un-styled.
-        else if(endIdxPrev < message.length)
+        else
         {
-            let endSubstring = message.substring(endIdxPrev, message.length);
-            if(endSubstring)
-            {
-                let segment: ITextLoggerMessageSegment = {
-                    messageSegment: endSubstring,
-                    styleKey: ""
-                }
-                segments.push(segment);
+            let defaultFullSegment: ITextLoggerMessageSegment = {
+                messageSegment: message,
+                styleKeys: initialStyles
             }
+            segments.push(defaultFullSegment);
         }
 
         return segments
     }
+
 }
