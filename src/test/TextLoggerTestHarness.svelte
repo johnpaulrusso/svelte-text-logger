@@ -23,6 +23,21 @@
     loggerController.LogString("Example Usage: loggerController.LogString(\"Hello World!\")");
     loggerController.LogString("This text is <b>bold</b>, this text is <red>red</red>, this text is <hl>highlighted</hl>, and this text is <b><hl><red>bold, red, and highlighted</red></hl></b>.");
 
+
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+    loggerController.LogString("Welcome to the TextLogger test harness.");
+
     function onLog()
     {
         let inputElement = document.getElementById("test-message-input") as HTMLInputElement
@@ -40,8 +55,12 @@
 </script>
 
 <div class="container">
-    <div class="logger">
-        <TextLogger model={loggerController.model}></TextLogger>
+   <div class="active-tab">
+        <div class="content-wrapper">
+            <div class="logger-wrapper">
+                <TextLogger model={loggerController.model}></TextLogger>
+            </div>
+         </div>
     </div>
     <div class="harness-input">
         <input id="test-message-input" type="text" placeholder="Enter a log message here...">
@@ -51,12 +70,28 @@
 
 <style>
     .container{
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        border: solid red;
+    }
+    .active-tab{
+        min-height: 0;
+        flex: 1;
         display: flex;
         flex-direction: column;
     }
-    .logger{
-        border: solid 2px;
-        height: 200px;
+    .content-wrapper{
+        min-height: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .logger-wrapper{
+        min-height: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
     .harness-input{
         display: flex;

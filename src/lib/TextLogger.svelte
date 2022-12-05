@@ -45,7 +45,8 @@
     .container{
         display: flex;
         flex-direction: column;
-        height: 100%;
+        flex: 1;
+        overflow-y: auto;
     }
 
     .control-bar{
@@ -53,6 +54,7 @@
         display: flex;
         justify-content: flex-end;
     }
+    
     .material-symbols-outlined {
       font-variation-settings:
       'FILL' 0,
@@ -69,6 +71,7 @@
 
         overflow-y: auto;
         overflow-x: auto;
+
         display: flex;
 
         flex: 1;
