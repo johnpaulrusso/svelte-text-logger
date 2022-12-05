@@ -1,7 +1,37 @@
 <script lang="ts">
+	import { onMount, afterUpdate } from "svelte";
     import type { ITextLoggerModel } from "./TextLoggerModel";
 
     export let model: ITextLoggerModel;
+
+    let loggerElement: HTMLElement | null = null;
+    let messagesElement: HTMLElement | null = null;
+    let prevMessagesLength = 0;
+
+    onMount(() => {
+        loggerElement = document.getElementById("log-container");
+        if(loggerElement){
+            messagesElement = loggerElement.getElementsByClassName("message-col").item(0) as HTMLElement;
+        }
+    })
+
+    afterUpdate(() => {
+        if(model.messages.length != prevMessagesLength)
+        {
+            if(loggerElement && messagesElement)
+            {
+                let messages = messagesElement.getElementsByClassName("log-message");
+                let lastMessage: HTMLElement | null = messages.item(messages.length - 1) as HTMLElement;
+
+                if(lastMessage)
+                {
+                    lastMessage.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});   
+                }
+
+                prevMessagesLength = model.messages.length;
+            }
+        }
+    });
 
     function getStyleFromStyleKeys(styleKeys: Array<string>) : string
     {
@@ -23,7 +53,7 @@
 <div class="control-bar">
     <span title="Clear Logs" class="material-symbols-outlined control-button" style="color: {model.config.controlbarButtonColor};" on:click={onClear} on:keydown={()=>{}}>clear_all</span>
 </div>
-<div class="log-container" style="background-color: {model.config.backgroundColor};">
+<div class="log-container" id="log-container" style="background-color: {model.config.backgroundColor};">
     <div class="datetime-col">
         {#each model.messages as m}
             <div class="log-item log-date" style={model.config.defaultStyle}>{m.datetime.toLocaleString()}:</div>
@@ -87,8 +117,10 @@
     
     .log-date{
         padding-right: 10px;
+        border: solid white 1px;
     }
     .log-message{
         display: flex;
+        border: solid white 1px;
     }
 </style>
