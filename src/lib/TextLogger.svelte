@@ -7,6 +7,7 @@
     let loggerElement: HTMLElement | null = null;
     let messagesElement: HTMLElement | null = null;
     let prevMessagesLength = 0;
+    let disableAutoScroll: boolean = false;
 
     onMount(() => {
         loggerElement = document.getElementById("log-container");
@@ -16,19 +17,22 @@
     })
 
     afterUpdate(() => {
-        if(model.messages.length != prevMessagesLength)
+        if(!disableAutoScroll)
         {
-            if(loggerElement && messagesElement)
+            if(model.messages.length != prevMessagesLength)
             {
-                let messages = messagesElement.getElementsByClassName("log-message");
-                let lastMessage: HTMLElement | null = messages.item(messages.length - 1) as HTMLElement;
-
-                if(lastMessage)
+                if(loggerElement && messagesElement)
                 {
-                    lastMessage.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});   
-                }
+                    let messages = messagesElement.getElementsByClassName("log-message");
+                    let lastMessage: HTMLElement | null = messages.item(messages.length - 1) as HTMLElement;
 
-                prevMessagesLength = model.messages.length;
+                    if(lastMessage)
+                    {
+                        lastMessage.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});   
+                    }
+
+                    prevMessagesLength = model.messages.length;
+                }
             }
         }
     });
@@ -46,12 +50,26 @@
     {
         model.messages = [];
     }
+    function onDisableAutoScroll()
+    {
+        disableAutoScroll = true;
+    }
+    function onEnableAutoScroll()
+    {
+        disableAutoScroll = false;
+    }
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <div class="container" style="background-color: {model.config.controlbarColor};">
 <div class="control-bar">
+    {#if disableAutoScroll}
+        <span title="Unlock Auto-Scrolling" class="material-symbols-outlined control-button" style="color: {model.config.controlbarButtonColor};" on:click={onEnableAutoScroll} on:keydown={()=>{}}>lock</span>
+    {:else}
+        <span title="Lock Auto-Scrolling" class="material-symbols-outlined control-button" style="color: {model.config.controlbarButtonColor};" on:click={onDisableAutoScroll} on:keydown={()=>{}}>lock_open</span>
+    {/if}
     <span title="Clear Logs" class="material-symbols-outlined control-button" style="color: {model.config.controlbarButtonColor};" on:click={onClear} on:keydown={()=>{}}>clear_all</span>
+
 </div>
 <div class="log-container" id="log-container" style="background-color: {model.config.backgroundColor};">
     <div class="datetime-col">
@@ -117,10 +135,8 @@
     
     .log-date{
         padding-right: 10px;
-        border: solid white 1px;
     }
     .log-message{
         display: flex;
-        border: solid white 1px;
     }
 </style>

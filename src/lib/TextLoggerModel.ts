@@ -2,7 +2,7 @@ export interface ITextLoggerModel
 {
     config: ITextLoggerConfiguration;
     messages: Array<ITextLoggerMessage>;
-    styles: {[key: string]: string}
+    styles: {[key: string]: string};
 }
 
 export interface ITextLoggerConfiguration
