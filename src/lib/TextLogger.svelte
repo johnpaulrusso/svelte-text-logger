@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { onMount, afterUpdate } from "svelte";
+	import { onMount, afterUpdate, createEventDispatcher } from "svelte";
     import type { ITextLoggerModel } from "./TextLoggerModel";
+
+    const dispatch = createEventDispatcher();
 
     export let model: ITextLoggerModel;
 
@@ -49,6 +51,7 @@
     function onClear()
     {
         model.messages = [];
+        dispatch('logs-cleared');
     }
     function onDisableAutoScroll()
     {
@@ -58,6 +61,7 @@
     {
         disableAutoScroll = false;
     }
+    
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
