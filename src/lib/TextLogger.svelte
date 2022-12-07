@@ -30,7 +30,7 @@
 
                     if(lastMessage)
                     {
-                        lastMessage.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});   
+                        lastMessage.scrollIntoView({behavior: "smooth", block: "end", inline: "start"});   
                     }
 
                     prevMessagesLength = model.messages.length;
