@@ -1,7 +1,57 @@
 <script lang="ts">
+	import { onMount, afterUpdate, createEventDispatcher } from "svelte";
     import type { ITextLoggerModel } from "./TextLoggerModel";
 
+    const dispatch = createEventDispatcher();
+
     export let model: ITextLoggerModel;
+
+    let loggerElement: HTMLElement | null = null;
+    let messagesElement: HTMLElement | null = null;
+    let prevMessagesLength = 0;
+    let disableAutoScroll: boolean = false;
+
+    onMount(() => {
+        loggerElement = document.getElementById("log-container");
+        if(loggerElement){
+            messagesElement = loggerElement.getElementsByClassName("message-col").item(0) as HTMLElement;
+        }
+        scrollToLatestLogMessage()
+    })
+
+    afterUpdate(() => {
+        if(!disableAutoScroll)
+        {
+            if(model.messages.length != prevMessagesLength)
+            {
+                scrollToLatestLogMessage(true);
+            }
+        }
+    });
+
+    export const reload = () =>
+    {
+        scrollToLatestLogMessage();
+    }
+
+    /*export this function so that the client can trigger this*/
+    function scrollToLatestLogMessage(smooth: boolean = false)
+    {
+        if(loggerElement && messagesElement)
+        {
+            let messages = messagesElement.getElementsByClassName("log-message");
+            let lastMessage: HTMLElement | null = messages.item(messages.length - 1) as HTMLElement;
+
+            if(lastMessage)
+            {
+                lastMessage.scrollIntoView({behavior: smooth ? "smooth" : "auto", 
+                                            block: "end", 
+                                            inline: "start"});   
+            }
+
+            prevMessagesLength = model.messages.length;
+        }
+    }
 
     function getStyleFromStyleKeys(styleKeys: Array<string>) : string
     {
@@ -15,15 +65,31 @@
     function onClear()
     {
         model.messages = [];
+        dispatch('logs-cleared');
     }
+    function onDisableAutoScroll()
+    {
+        disableAutoScroll = true;
+    }
+    function onEnableAutoScroll()
+    {
+        disableAutoScroll = false;
+    }
+    
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <div class="container" style="background-color: {model.config.controlbarColor};">
 <div class="control-bar">
+    {#if disableAutoScroll}
+        <span title="Unlock Auto-Scrolling" class="material-symbols-outlined control-button" style="color: {model.config.controlbarButtonColor};" on:click={onEnableAutoScroll} on:keydown={()=>{}}>lock</span>
+    {:else}
+        <span title="Lock Auto-Scrolling" class="material-symbols-outlined control-button" style="color: {model.config.controlbarButtonColor};" on:click={onDisableAutoScroll} on:keydown={()=>{}}>lock_open</span>
+    {/if}
     <span title="Clear Logs" class="material-symbols-outlined control-button" style="color: {model.config.controlbarButtonColor};" on:click={onClear} on:keydown={()=>{}}>clear_all</span>
+
 </div>
-<div class="log-container" style="background-color: {model.config.backgroundColor};">
+<div class="log-container" id="log-container" style="background-color: {model.config.backgroundColor};">
     <div class="datetime-col">
         {#each model.messages as m}
             <div class="log-item log-date" style={model.config.defaultStyle}>{m.datetime.toLocaleString()}:</div>
