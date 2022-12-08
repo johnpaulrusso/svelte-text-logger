@@ -16,6 +16,7 @@
         if(loggerElement){
             messagesElement = loggerElement.getElementsByClassName("message-col").item(0) as HTMLElement;
         }
+        scrollToLatestLogMessage()
     })
 
     afterUpdate(() => {
@@ -23,21 +24,34 @@
         {
             if(model.messages.length != prevMessagesLength)
             {
-                if(loggerElement && messagesElement)
-                {
-                    let messages = messagesElement.getElementsByClassName("log-message");
-                    let lastMessage: HTMLElement | null = messages.item(messages.length - 1) as HTMLElement;
-
-                    if(lastMessage)
-                    {
-                        lastMessage.scrollIntoView({behavior: "smooth", block: "end", inline: "start"});   
-                    }
-
-                    prevMessagesLength = model.messages.length;
-                }
+                scrollToLatestLogMessage(true);
             }
         }
     });
+
+    export const reload = () =>
+    {
+        scrollToLatestLogMessage();
+    }
+
+    /*export this function so that the client can trigger this*/
+    function scrollToLatestLogMessage(smooth: boolean = false)
+    {
+        if(loggerElement && messagesElement)
+        {
+            let messages = messagesElement.getElementsByClassName("log-message");
+            let lastMessage: HTMLElement | null = messages.item(messages.length - 1) as HTMLElement;
+
+            if(lastMessage)
+            {
+                lastMessage.scrollIntoView({behavior: smooth ? "smooth" : "auto", 
+                                            block: "end", 
+                                            inline: "start"});   
+            }
+
+            prevMessagesLength = model.messages.length;
+        }
+    }
 
     function getStyleFromStyleKeys(styleKeys: Array<string>) : string
     {
