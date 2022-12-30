@@ -7,14 +7,14 @@
     export let model: ITextLoggerModel;
 
     let loggerElement: HTMLElement | null = null;
-    let messagesElement: HTMLElement | null = null;
+    let datetimeColumnElement: HTMLElement | null = null;
     let prevMessagesLength = 0;
     let disableAutoScroll: boolean = false;
 
     onMount(() => {
         loggerElement = document.getElementById("log-container");
         if(loggerElement){
-            messagesElement = loggerElement.getElementsByClassName("message-col").item(0) as HTMLElement;
+            datetimeColumnElement = loggerElement.getElementsByClassName("datetime-col").item(0) as HTMLElement;
         }
         scrollToLatestLogMessage()
     })
@@ -37,9 +37,9 @@
     /*export this function so that the client can trigger this*/
     function scrollToLatestLogMessage(smooth: boolean = false)
     {
-        if(loggerElement && messagesElement)
+        if(loggerElement && datetimeColumnElement)
         {
-            let messages = messagesElement.getElementsByClassName("log-message");
+            let messages = datetimeColumnElement.getElementsByClassName("log-date");
             let lastMessage: HTMLElement | null = messages.item(messages.length - 1) as HTMLElement;
 
             if(lastMessage)
