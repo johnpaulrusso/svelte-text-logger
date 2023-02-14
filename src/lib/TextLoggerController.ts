@@ -18,7 +18,7 @@ export class TextLoggerController
         else
         {
             let defaultConfig: ITextLoggerConfiguration = {
-                defaultStyle: "font-family: 'Courier New', Courier, monospace;",
+                defaultStyle: "",
                 backgroundColor: "white",
                 controlbarColor: "white",
                 controlbarButtonColor: "black",
