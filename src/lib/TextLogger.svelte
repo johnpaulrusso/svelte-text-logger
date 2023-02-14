@@ -3,6 +3,7 @@
     import type { ITextLoggerModel } from "./TextLoggerModel";
 
     const dispatch = createEventDispatcher();
+    const regexTwoDigit = "^[0-9]{1,2}[:.,-]?$";
 
     export let model: ITextLoggerModel;
 
@@ -10,6 +11,8 @@
     let datetimeColumnElement: HTMLElement | null = null;
     let prevMessagesLength = 0;
     let disableAutoScroll: boolean = false;
+    let fontSizePx: number = 14;
+    let fontFamily: string = "Arial";
 
     onMount(() => {
         loggerElement = document.getElementById("log-container");
@@ -75,30 +78,72 @@
     {
         disableAutoScroll = false;
     }
+    function onUpdateFontSize(event: Event)
+    {
+        let input = event.target as HTMLInputElement;
+        if(input)
+        {
+            if( input.checkValidity())
+            {
+                fontSizePx = parseInt(input.value);
+            }
+            else
+            {
+                input.value = fontSizePx.toString();
+            }
+           
+        }
+    }
+
+    function onUpdateFontFamily(event: Event)
+    {
+        let select = event.target as HTMLInputElement;
+        if(select)
+        {
+            fontFamily = select.value;
+        }
+    }
     
 </script>
 
 <div class="container" style="background-color: {model.config.controlbarColor};">
 <div class="control-bar">
+    <div>
+    <label for='logger-font-selector'>Font:</label>
+    <select id='logger-font-selector' on:change={onUpdateFontFamily}>
+        <option selected value='Arial'>Arial</option>
+        <option value='Courier New'>Courier New</option>
+        <option value='Georgia'>Georgia</option>
+        <option value='Tahoma'>Tahoma</option>
+        <option value='Times New Roman'>Times New Roman</option>
+        <option value='Trebuchet MS'>Trebuchet MS</option>
+        <option value='Verdana'>Verdana</option>
+    </select>
+
+    <label for='logger-font-size-selector'>Size:</label>
+    <input id='logger-font-size-selector' pattern={regexTwoDigit} value={fontSizePx} type="number" min=8 max=24 on:change={onUpdateFontSize}/>
+    </div>
+    <div class="control-bar-buttons">
     {#if disableAutoScroll}
         <span title="Unlock Auto-Scrolling" class="material-symbols-outlined control-button" style="color: {model.config.controlbarButtonColor};" on:click={onEnableAutoScroll} on:keydown={()=>{}}>lock</span>
     {:else}
         <span title="Lock Auto-Scrolling" class="material-symbols-outlined control-button" style="color: {model.config.controlbarButtonColor};" on:click={onDisableAutoScroll} on:keydown={()=>{}}>lock_open</span>
     {/if}
     <span title="Clear Logs" class="material-symbols-outlined control-button" style="color: {model.config.controlbarButtonColor};" on:click={onClear} on:keydown={()=>{}}>clear_all</span>
+    </div>
 
 </div>
 <div class="log-container" id="log-container" style="background-color: {model.config.backgroundColor};">
     <div class="datetime-col">
         {#each model.messages as m}
-            <div class="log-item log-date" style={model.config.defaultStyle}>{m.datetime.toLocaleString()}:</div>
+            <div class="log-item log-date" style="font-size: {fontSizePx}px; font-family: {fontFamily}; {model.config.defaultStyle}  ">{m.datetime.toLocaleString()}:</div>
         {/each}
     </div>
     <div class="message-col">
         {#each model.messages as m}
             <div class="log-item log-message">
                 {#each m.messageSegments as s}
-                    <div style={getStyleFromStyleKeys(s.styleKeys)}>{s.messageSegment}</div>
+                    <div style="font-size: {fontSizePx}px; font-family: {fontFamily}; {getStyleFromStyleKeys(s.styleKeys)}  ">{s.messageSegment}</div>
                 {/each}
             </div>
         {/each}
@@ -117,9 +162,24 @@
     .control-bar{
         flex: 0;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        align-items: center;
+    }
+    label{
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+
+        padding-left: 3px;
+        font-size: small;
+    }
+    input{
+        max-width: 42px;
+        
     }
     
+    .control-bar-buttons{
+        margin-right: 3px;
+    }
     .material-symbols-outlined {
       font-variation-settings:
       'FILL' 0,
@@ -129,6 +189,7 @@
     }
     .control-button{
         cursor: pointer;
+        margin-top: 2px;
     }
 
     .log-container{
@@ -152,6 +213,7 @@
     
     .log-date{
         padding-right: 10px;
+        padding-left: 3px;
     }
     .log-message{
         display: flex;
