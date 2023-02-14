@@ -5,7 +5,7 @@
 	import type { ITextLoggerConfiguration } from "$lib/TextLoggerModel";
 
     let config: ITextLoggerConfiguration = {
-        defaultStyle: "font-family: 'Courier New', Courier, monospace; color: lightgray;",
+        defaultStyle: "color: lightgray;",
         backgroundColor: "darkslategray",
         controlbarColor: "rgb(31, 51, 51)",
         controlbarButtonColor: "white",
@@ -73,7 +73,6 @@
         height: 200px;
         display: flex;
         flex-direction: column;
-        border: solid red;
     }
     .active-tab{
         min-height: 0;
