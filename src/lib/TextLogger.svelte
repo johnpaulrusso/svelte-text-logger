@@ -11,7 +11,7 @@
     let datetimeColumnElement: HTMLElement | null = null;
     let prevMessagesLength = 0;
     let disableAutoScroll: boolean = false;
-    let fontSizePx: number = 14;
+    let fontSizePx: number = 16;
     let fontFamily: string = "Arial";
 
     onMount(() => {
@@ -174,7 +174,10 @@
     }
     input{
         max-width: 42px;
-        
+        border-radius: 5px;
+    }
+    select{
+        border-radius: 5px;
     }
     
     .control-bar-buttons{
