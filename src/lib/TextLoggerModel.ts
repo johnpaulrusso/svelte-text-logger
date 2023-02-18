@@ -3,6 +3,7 @@ export interface ITextLoggerModel
     config: ITextLoggerConfiguration;
     messages: Array<ITextLoggerMessage>;
     styles: {[key: string]: string};
+    inhibitAutoScrolling: boolean;
 }
 
 export interface ITextLoggerConfiguration

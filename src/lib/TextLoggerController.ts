@@ -12,7 +12,7 @@ export class TextLoggerController
     {
         if(config)
         {
-            this.model = {config: config, messages: [], styles: {}};
+            this.model = {config: config, messages: [], styles: {}, inhibitAutoScrolling: false};
             this.model.styles["default"] = config.defaultStyle;
         }
         else
@@ -24,7 +24,7 @@ export class TextLoggerController
                 controlbarButtonColor: "black",
                 controlbarButtonHoverStyle: "background-color: lightgray; border-radius: 3px;"
             }
-            this.model = {config: defaultConfig, messages: [], styles: {}};
+            this.model = {config: defaultConfig, messages: [], styles: {}, inhibitAutoScrolling: false};
             this.model.styles["default"] = defaultConfig.defaultStyle;
         }
     }
