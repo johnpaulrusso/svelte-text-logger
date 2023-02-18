@@ -40,7 +40,7 @@
     /*export this function so that the client can trigger this*/
     function scrollToLatestLogMessage(smooth: boolean = false)
     {
-        if(loggerElement && datetimeColumnElement)
+        if(loggerElement && datetimeColumnElement && !model.inhibitAutoScrolling)
         {
             let messages = datetimeColumnElement.getElementsByClassName("log-date");
             let lastMessage: HTMLElement | null = messages.item(messages.length - 1) as HTMLElement;
