@@ -196,6 +196,7 @@
     }
 
     .log-container{
+        min-height: 0px;
         padding-top: 1px;
 
         overflow-y: auto;
